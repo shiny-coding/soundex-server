@@ -4,8 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "tsc": "./node_modules/typescript/bin/tsc",
     "start": "node build/index.js",
-    "build": "tsc --project tsconfig.json",
+    "build": "tsc",
+	"postinstall": "tsc",
     "watch": "nodemon --watch . build/index.js"
   },
   "keywords": [],
@@ -16,7 +18,8 @@
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "flatted": "^3.2.7",
-    "mongodb": "^4.13.0"
+    "mongodb": "^4.13.0",
+    "typescript": "^4.9.4"
   },
   "devDependencies": {
     "nodemon": "^2.0.20"
