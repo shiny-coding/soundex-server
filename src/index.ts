@@ -11,6 +11,13 @@ router.use( express.json() );
 
 const app = express();
 
+app.use((req, res, next) => {
+    res.append('Access-Control-Allow-Origin', ['*']);
+    res.append('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.append('Access-Control-Allow-Headers', 'Content-Type');
+    next();
+});
+
 app.use( bodyParser.urlencoded({ extended: false }) );
 app.use( bodyParser.json() );
 
@@ -58,7 +65,6 @@ async function main() {
 
 	app.post( "/get_or_create/:username", async ( request, response ) => {
 
-		addHeaders( response );
 		let passwordHash = request.body.passwordHash;
 		let account = await accounts.findOne( { username : request.params.username } ) as Account;
 		if ( account == null ) {
@@ -83,12 +89,7 @@ async function main() {
 		response.json( { result : true, account } );
 	});
 
-	function addHeaders ( response:any ) {
-		return response.header( 'Access-Control-Allow-Origin: *' );
-	}
-
 	app.post( "/update/:username/", async ( request, response ) => {
-		addHeaders( response );
 		let updateOne = await accounts.updateOne( {
 			username : request.params.username,
 			passwordHash : request.body.passwordHash
