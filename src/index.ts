@@ -58,6 +58,7 @@ async function main() {
 
 	app.post( "/get_or_create/:username", async ( request, response ) => {
 
+		addHeaders( response );
 		let passwordHash = request.body.passwordHash;
 		let account = await accounts.findOne( { username : request.params.username } ) as Account;
 		if ( account == null ) {
@@ -79,9 +80,7 @@ async function main() {
 		}
 		delete account.passwordHash;
 		console.log( account );
-		addHeaders(
-			response.json( { result : true, account } )
-		);
+		response.json( { result : true, account } );
 	});
 
 	function addHeaders ( response:any ) {
@@ -89,6 +88,7 @@ async function main() {
 	}
 
 	app.post( "/update/:username/", async ( request, response ) => {
+		addHeaders( response );
 		let updateOne = await accounts.updateOne( {
 			username : request.params.username,
 			passwordHash : request.body.passwordHash
@@ -98,9 +98,7 @@ async function main() {
 			}
 		});
 
-		addHeaders(
-			response.json( { result : updateOne.matchedCount != 0 } )
-		);
+		response.json( { result : updateOne.matchedCount != 0 } );
 	});
 };
 
