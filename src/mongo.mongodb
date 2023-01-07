@@ -8,5 +8,6 @@ use('soundex');
 
 // The drop() command destroys all data from a collection.
 // Make sure you run it against the correct database and collection.
-db.accounts.insertOne({"username":"someone", "passwordHash":"something", "tracks":[]});
+//db.accounts.insertOne({"username":"someone", "passwordHash":"something", "tracks":[]});
+db.accounts.drop();
 

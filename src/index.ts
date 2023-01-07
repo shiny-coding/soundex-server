@@ -79,8 +79,14 @@ async function main() {
 		}
 		delete account.passwordHash;
 		console.log( account );
-		response.json( { result : true, account } );
+		addHeaders(
+			response.json( { result : true, account } )
+		);
 	});
+
+	function addHeaders ( response:any ) {
+		return response.header( 'Access-Control-Allow-Origin: *' );
+	}
 
 	app.post( "/update/:username/", async ( request, response ) => {
 		let updateOne = await accounts.updateOne( {
@@ -91,7 +97,10 @@ async function main() {
 				tracks : request.body.tracks
 			}
 		});
-		response.json( { result : updateOne.matchedCount != 0 } );
+
+		addHeaders(
+			response.json( { result : updateOne.matchedCount != 0 } )
+		);
 	});
 };
 
