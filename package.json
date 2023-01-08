@@ -7,7 +7,7 @@
     "tsc": "./node_modules/typescript/bin/tsc",
     "start": "node build/index.js",
     "build": "tsc",
-	"postinstall": "tsc",
+    "postinstall": "tsc",
     "watch": "nodemon --watch . build/index.js"
   },
   "keywords": [],
