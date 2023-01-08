@@ -1,7 +1,6 @@
 import express from 'express';
 import bodyParser from "body-parser";
-import { Request, Response } from "express";
-import { Collection, ObjectId } from "mongodb";
+import { Collection } from "mongodb";
 import Account from "./model";
 
 import { connectToDatabase, db } from "./database"
@@ -63,14 +62,21 @@ async function main() {
 		console.log(`Server started at http://localhost:${PORT}`);
 	});
 
-	app.post( "/get_or_create/:username", async ( request, response ) => {
+	app.post( "/login_or_register", async ( request, response ) => {
 
-		let passwordHash = request.body.passwordHash;
-		let account = await accounts.findOne( { username : request.params.username } ) as Account;
+		let { username, passwordHash } = request.body;
+		if ( username.trim() == '' ) {
+			response.status( 403 ).json( {
+				result : false,
+				error: "empty username"
+			} );
+			return;
+		}
+		let account = await accounts.findOne( { username } ) as Account;
 		if ( account == null ) {
 			account = {
-				username : request.params.username,
-				passwordHash : passwordHash,
+				username,
+				passwordHash,
 				tracks : []
 			};
 			let insertOne = await accounts.insertOne( account );
@@ -84,17 +90,14 @@ async function main() {
 				return;
 			}
 		}
-		delete account.passwordHash;
 		console.log( account );
 		response.json( { result : true, account } );
 	});
 
-	app.post( "/update/:username", async ( request, response ) => {
+	app.post( "/update", async ( request, response ) => {
+		let { username, passwordHash } = request.body;
 		let tracks = JSON.parse( request.body.tracks );
-		let updateOne = await accounts.updateOne( {
-			username : request.params.username,
-			passwordHash : request.body.passwordHash
-		}, {
+		let updateOne = await accounts.updateOne( { username, passwordHash }, {
 			$set : { tracks }
 		});
 

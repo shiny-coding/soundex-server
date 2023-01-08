@@ -7,7 +7,5 @@ export default class Account {
 		public passwordHash?:string,
 		public tracks?: string[],
 		public _id?: ObjectId
-	) {
-
-	}
+	) {}
 }
