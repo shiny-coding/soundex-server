@@ -89,14 +89,13 @@ async function main() {
 		response.json( { result : true, account } );
 	});
 
-	app.post( "/update/:username/", async ( request, response ) => {
+	app.post( "/update/:username", async ( request, response ) => {
+		let tracks = JSON.parse( request.body.tracks );
 		let updateOne = await accounts.updateOne( {
 			username : request.params.username,
 			passwordHash : request.body.passwordHash
 		}, {
-			$set : {
-				tracks : request.body.tracks
-			}
+			$set : { tracks }
 		});
 
 		response.json( { result : updateOne.matchedCount != 0 } );
