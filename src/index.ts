@@ -10,7 +10,7 @@ router.use( express.json() );
 
 const app = express();
 
-app.use((req, res, next) => {
+app.use( ( req, res, next ) => {
     res.append('Access-Control-Allow-Origin', ['*']);
     res.append('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
     res.append('Access-Control-Allow-Headers', 'Content-Type');
@@ -22,17 +22,16 @@ app.use( bodyParser.json() );
 
 const PORT = process.env.PORT || 3001;
 
-
 async function main() {
 
 	await connectToDatabase().catch((error: Error) => {
-		console.error("Database connection failed", error);
+		console.error( "Database connection failed", error );
 		process.exit();
 	});
 
 	let accounts : Collection<Account> = db.collection<Account>( process.env.ACCOUNTS_COLLECTION_NAME as string );
 
-	await db.command({
+	await db.command( {
 		"collMod": process.env.ACCOUNTS_COLLECTION_NAME,
 		"validator": {
 			$jsonSchema: {
@@ -56,11 +55,11 @@ async function main() {
 				}
 			}
 		}
-	});
+	} );
 
-	app.listen(PORT, () => {
+	app.listen( PORT, () => {
 		console.log(`Server started at http://localhost:${PORT}`);
-	});
+	} );
 
 	app.post( "/login_or_register", async ( request, response ) => {
 
