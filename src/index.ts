@@ -2,8 +2,10 @@ import express from 'express';
 import bodyParser from "body-parser";
 import { Collection } from "mongodb";
 import Account from "./model";
-
 import { connectToDatabase, db } from "./database"
+import * as dotenv from "dotenv";
+
+dotenv.config();
 
 const router = express.Router();
 router.use( express.json() );

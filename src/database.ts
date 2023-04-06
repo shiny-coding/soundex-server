@@ -1,10 +1,8 @@
 import * as mongoDB from "mongodb";
-import * as dotenv from "dotenv";
 
 export var db: mongoDB.Db;
 
 export async function connectToDatabase () {
-	dotenv.config();
 
 	if ( process.env.DB_CONN_STRING === undefined ) {
 		throw "DB_CONN_STRING is not defined";
