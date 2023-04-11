@@ -4,6 +4,8 @@ import { Collection } from "mongodb";
 import Account from "./model";
 import { connectToDatabase, db } from "./database"
 import * as dotenv from "dotenv";
+const morgan = require("morgan");
+const cors = require('cors');
 
 dotenv.config();
 
@@ -12,12 +14,8 @@ router.use( express.json() );
 
 const app = express();
 
-app.use( ( req, res, next ) => {
-    res.append('Access-Control-Allow-Origin', ['*']);
-    res.append('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-    res.append('Access-Control-Allow-Headers', 'Content-Type');
-    next();
-});
+app.use(morgan("dev"));
+app.use(cors({ origin: '*' }));
 
 app.use( bodyParser.urlencoded({ extended: false }) );
 app.use( bodyParser.json() );
@@ -63,6 +61,10 @@ async function main() {
 		console.log(`Server started at http://localhost:${PORT}`);
 	} );
 
+	app.get( "/info", ( request, response ) => {
+		response.json( { result : true } );
+	} );
+
 	app.post( "/login_or_register", async ( request, response ) => {
 
 		let { username, passwordHash } = request.body;
@@ -97,7 +99,7 @@ async function main() {
 
 	app.post( "/update", async ( request, response ) => {
 		let { username, passwordHash } = request.body;
-		let tracks = JSON.parse( request.body.tracks );
+		let tracks = request.body.tracks;
 		let updateOne = await accounts.updateOne( { username, passwordHash }, {
 			$set : { tracks }
 		});
