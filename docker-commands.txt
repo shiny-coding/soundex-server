@@ -1,0 +1,3 @@
+docker run -v /soundex/soundex-server/.env:/soundex/soundex-server/.env -p 3002:3002 -it --rm --entrypoint npm serhiichechin/soundex-server:v1.0.0 run start
+
+docker run -v /soundex/soundex-server/.env:/soundex/soundex-server/.env -it --rm --entrypoint bash serhiichechin/soundex-server:v1.0.0
