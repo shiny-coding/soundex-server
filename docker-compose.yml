@@ -1,0 +1,10 @@
+version: '3.3'
+
+services:
+  soundex-server:
+    image: serhiichechin/soundex-server:v1.0.0
+    ports:
+      - "3002:3002"
+    volumes:
+      - /soundex/soundex-server/.env:/soundex/soundex-server/.env
+    entrypoint: ["npm", "run", "start"] 
